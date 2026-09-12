@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1a1c3d">
+<title>BoomSort — Challenge a friend</title>
+<meta name="description" content="You've been challenged to BoomSort: same game, same seed, highest score wins.">
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="You've been challenged to BoomSort">
+<meta property="og:description" content="Same game, same seed. Let's see who scores more.">
+<meta property="og:image" content="../assets/social.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../styles.css">
+<script>
+  // Applicata qui, in testa, prima che il resto della pagina si disegni:
+  // e' l'unico modo per non far balenare un attimo l'inglese di serie
+  // prima di correggerlo nella lingua giusta. Il resto della logica
+  // (cambio manuale, tendina) vive nello script in fondo, insieme al
+  // resto del markup che gli serve.
+  (function () {
+    var SUPPORTATE = ['it', 'en', 'fr', 'es', 'de', 'ja', 'pt'];
+    var CHIAVE = 'boomsort-sfida-lang';
+
+    function rileva() {
+      // 1) il link stesso, se chi l'ha condiviso aveva l'app in una
+      //    lingua nota — e' il segnale piu' preciso che abbiamo.
+      var dalLink = new URLSearchParams(location.search).get('hl');
+      if (dalLink && SUPPORTATE.indexOf(dalLink) !== -1) return dalLink;
+
+      // 2) una scelta fatta a mano in una visita precedente su questa
+      //    stessa pagina (vedi la tendina in fondo).
+      var salvata = null;
+      try { salvata = localStorage.getItem(CHIAVE); } catch (e) {}
+      if (salvata && SUPPORTATE.indexOf(salvata) !== -1) return salvata;
+
+      // 3) la lingua del browser di chi legge, per chi arriva senza link
+      //    (o con un link vecchio, condiviso prima di questa modifica).
+      var base = (navigator.language || 'en').toLowerCase().split('-')[0];
+      if (base === 'pt') return 'pt';
+      if (SUPPORTATE.indexOf(base) !== -1) return base;
+
+      return 'en';
+    }
+
+    document.documentElement.setAttribute('data-lang', rileva());
+  })();
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <img class="brand-icon" src="../assets/bomba.png" alt="" aria-hidden="true">
+      <img class="brand-word" src="../assets/wordmark.png" alt="BoomSort">
+    </a>
+    <div class="lang-switch" id="langSwitch">
+      <button class="lang-current" id="langCurrent" type="button" aria-haspopup="true" aria-expanded="false">EN</button>
+      <div class="lang-options" id="langOptions" hidden>
+        <button class="lang-option" type="button" data-lang="it">IT</button>
+        <button class="lang-option" type="button" data-lang="en">EN</button>
+        <button class="lang-option" type="button" data-lang="fr">FR</button>
+        <button class="lang-option" type="button" data-lang="es">ES</button>
+        <button class="lang-option" type="button" data-lang="de">DE</button>
+        <button class="lang-option" type="button" data-lang="ja">JA</button>
+        <button class="lang-option" type="button" data-lang="pt">PT</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section class="wrap" style="padding:48px 0;text-align:center">
+  <h1>
+    <span class="it">Ti hanno sfidato!</span>
+    <span class="en">You've been challenged!</span>
+    <span class="fr">On t'a défié !</span>
+    <span class="es">¡Te han desafiado!</span>
+    <span class="de">Du hast eine Challenge bekommen!</span>
+    <span class="ja">挑戦を受けました！</span>
+    <span class="pt">Você foi desafiado!</span>
+  </h1>
+
+  <p>
+    <span class="it">Stessa partita, stesso codice: vince chi fa più punti in 90 secondi.</span>
+    <span class="en">Same game, same code: highest score in 90 seconds wins.</span>
+    <span class="fr">Même partie, même code : le meilleur score en 90&nbsp;secondes gagne.</span>
+    <span class="es">Misma partida, mismo código: gana quien haga más puntos en 90&nbsp;segundos.</span>
+    <span class="de">Gleiches Spiel, gleicher Code: Wer in 90&nbsp;Sekunden die meisten Punkte macht, gewinnt.</span>
+    <span class="ja">同じゲーム、同じコード。90秒でより高いスコアを出した方が勝ち。</span>
+    <span class="pt">Mesmo jogo, mesmo código: vence quem fizer mais pontos em 90&nbsp;segundos.</span>
+  </p>
+
+  <!-- Il codice, in chiaro e selezionabile: è il ripiego che funziona sempre,
+       anche a chi legge questa pagina da un computer o da un Android. -->
+  <p style="font-size:2.2rem;font-weight:800;letter-spacing:.14em;margin:28px 0">
+    <code id="codice">—</code>
+  </p>
+
+  <p>
+    <a class="btn" id="apri" href="#">
+      <span class="it">Apri in BoomSort</span>
+      <span class="en">Open in BoomSort</span>
+      <span class="fr">Ouvrir dans BoomSort</span>
+      <span class="es">Abrir en BoomSort</span>
+      <span class="de">In BoomSort öffnen</span>
+      <span class="ja">BoomSortで開く</span>
+      <span class="pt">Abrir no BoomSort</span>
+    </a>
+  </p>
+
+  <p style="opacity:.7">
+    <span class="it">Non hai ancora l'app? Scaricala, apri <strong>Sfida amico</strong> e incolla il codice qui sopra.</span>
+    <span class="en">Don't have the app yet? Get it, open <strong>Challenge a friend</strong> and paste the code above.</span>
+    <span class="fr">Tu n'as pas encore l'appli&nbsp;? Télécharge-la, ouvre <strong>Défier un ami</strong> et colle le code ci-dessus.</span>
+    <span class="es">¿Aún no tienes la app? Descárgala, abre <strong>Desafiar a un amigo</strong> y pega el código de arriba.</span>
+    <span class="de">Du hast die App noch nicht? Lade sie herunter, öffne <strong>Freund herausfordern</strong> und füge den Code oben ein.</span>
+    <span class="ja">アプリをまだ持っていない？ダウンロードして<strong>チャレンジ</strong>を開き、上のコードを貼り付けてね。</span>
+    <span class="pt">Ainda não tem o app? Baixe, abra <strong>Desafiar amigo</strong> e cole o código acima.</span>
+  </p>
+
+  <!-- Il giorno del lancio: href="https://apps.apple.com/app/id6788836304"
+       e le etichette tornano quelle di "Download on the App Store" nelle
+       varie lingue — stesso trattamento del pulsante in ../index.html,
+       stesso motivo: finche' la scheda non esiste il link darebbe un 404,
+       e questa e' proprio la pagina che deve convincere chi non ha ancora
+       l'app a scaricarla. -->
+  <p style="margin-top:8px">
+    <a class="btn btn-primary" href="#" onclick="return false;">
+      <span class="it">📱 Presto su App Store</span>
+      <span class="en">📱 Coming soon to the App Store</span>
+      <span class="fr">📱 Bientôt sur l'App Store</span>
+      <span class="es">📱 Próximamente en App Store</span>
+      <span class="de">📱 Bald im App Store</span>
+      <span class="ja">📱 App Storeで近日公開</span>
+      <span class="pt">📱 Em breve na App Store</span>
+    </a>
+  </p>
+</section>
+
+<!-- Per chi arriva qui senza l'app: un assaggio del gioco vero, non solo
+     parole. Stessi tre screenshot della home, stessa cornice — così chi
+     non ha ancora BoomSort vede subito di cosa si tratta prima di
+     decidere se scaricarlo. -->
+<section class="wrap" style="padding:8px 0 48px">
+  <div class="section-head">
+    <span class="kicker it">Anteprima</span>
+    <span class="kicker en">Preview</span>
+    <span class="kicker fr">Aperçu</span>
+    <span class="kicker es">Vista previa</span>
+    <span class="kicker de">Vorschau</span>
+    <span class="kicker ja">プレビュー</span>
+    <span class="kicker pt">Prévia</span>
+    <h2>
+      <span class="it">Uno sguardo alla fabbrica</span>
+      <span class="en">A peek inside the factory</span>
+      <span class="fr">Un aperçu de l'usine</span>
+      <span class="es">Un vistazo a la fábrica</span>
+      <span class="de">Ein Blick in die Fabrik</span>
+      <span class="ja">工場をちょっとのぞいてみよう</span>
+      <span class="pt">Uma espiada na fábrica</span>
+    </h2>
+  </div>
+  <div class="mockups">
+    <figure>
+      <img class="mockup-shot" src="../assets/screenshot-classica.jpg"
+           alt="BoomSort gameplay: varied bombs mid-sort, score, multiplier and combo on screen"
+           width="780" height="1576">
+      <figcaption class="mockup-caption it">Classica — punteggio, moltiplicatore, combo</figcaption>
+      <figcaption class="mockup-caption en">Classic — score, multiplier, combo</figcaption>
+      <figcaption class="mockup-caption fr">Classique — score, multiplicateur, combo</figcaption>
+      <figcaption class="mockup-caption es">Clásico — puntuación, multiplicador, combo</figcaption>
+      <figcaption class="mockup-caption de">Classic — Punktzahl, Multiplikator, Combo</figcaption>
+      <figcaption class="mockup-caption ja">クラシック — スコア、倍率、コンボ</figcaption>
+      <figcaption class="mockup-caption pt">Clássico — pontuação, multiplicador, combo</figcaption>
+    </figure>
+    <figure>
+      <img class="mockup-shot" src="../assets/screenshot-carriera.jpg"
+           alt="Career mode: the Boomville Factory map, Assembly Dept. complete and Warehouse underway"
+           width="780" height="1576">
+      <figcaption class="mockup-caption it">Carriera — reparti, turni, stelle</figcaption>
+      <figcaption class="mockup-caption en">Career — departments, shifts, stars</figcaption>
+      <figcaption class="mockup-caption fr">Carrière — départements, tours, étoiles</figcaption>
+      <figcaption class="mockup-caption es">Carrera — departamentos, turnos, estrellas</figcaption>
+      <figcaption class="mockup-caption de">Karriere — Abteilungen, Schichten, Sterne</figcaption>
+      <figcaption class="mockup-caption ja">キャリア — 部門、シフト、スター</figcaption>
+      <figcaption class="mockup-caption pt">Carreira — departamentos, turnos, estrelas</figcaption>
+    </figure>
+    <figure>
+      <img class="mockup-shot" src="../assets/screenshot-ost.jpg"
+           alt="The OST collection: eight dynamic soundtrack themes, unlocked by playing"
+           width="780" height="1576">
+      <figcaption class="mockup-caption it">Colonna sonora — sbloccabile giocando</figcaption>
+      <figcaption class="mockup-caption en">Soundtrack — unlockable by playing</figcaption>
+      <figcaption class="mockup-caption fr">Bande-son — à débloquer en jouant</figcaption>
+      <figcaption class="mockup-caption es">Banda sonora — se desbloquea jugando</figcaption>
+      <figcaption class="mockup-caption de">Soundtrack — freispielbar</figcaption>
+      <figcaption class="mockup-caption ja">サウンドトラック — プレイして解放</figcaption>
+      <figcaption class="mockup-caption pt">Trilha sonora — desbloqueável jogando</figcaption>
+    </figure>
+  </div>
+  <p class="mockups-note it">Prese direttamente dal gioco, su iPhone 14 Pro Max — nessuna messa in scena, nessun filtro.</p>
+  <p class="mockups-note en">Straight from the game, on an iPhone 14 Pro Max — no staging, no filters.</p>
+  <p class="mockups-note fr">Prises directement dans le jeu, sur iPhone 14 Pro Max — sans mise en scène, sans filtre.</p>
+  <p class="mockups-note es">Tomadas directamente del juego, en un iPhone 14 Pro Max — sin montajes ni filtros.</p>
+  <p class="mockups-note de">Direkt aus dem Spiel, auf einem iPhone 14 Pro Max — ohne Inszenierung, ohne Filter.</p>
+  <p class="mockups-note ja">iPhone 14 Pro Maxで、ゲームからそのまま撮影 — 演出も加工もなし。</p>
+  <p class="mockups-note pt">Direto do jogo, em um iPhone 14 Pro Max — sem produção, sem filtros.</p>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="../support.html">
+          <span class="en">Support</span><span class="it">Supporto</span>
+          <span class="fr">Assistance</span><span class="es">Soporte</span>
+          <span class="de">Support</span><span class="ja">サポート</span>
+          <span class="pt">Suporte</span>
+        </a>
+        <a href="../privacy.html">
+          <span class="en">Privacy</span><span class="it">Privacy</span>
+          <span class="fr">Confidentialité</span><span class="es">Privacidad</span>
+          <span class="de">Datenschutz</span><span class="ja">プライバシー</span>
+          <span class="pt">Privacidade</span>
+        </a>
+        <a href="../terms.html">
+          <span class="en">Terms of Use</span><span class="it">Termini d'uso</span>
+          <span class="fr">Conditions d'utilisation</span><span class="es">Términos de uso</span>
+          <span class="de">Nutzungsbedingungen</span><span class="ja">利用規約</span>
+          <span class="pt">Termos de Uso</span>
+        </a>
+      </div>
+      <div class="footer-copy">
+        <span class="en">© <span class="year"></span> Vincenzo Famao. All rights reserved.</span>
+        <span class="it">© <span class="year"></span> Vincenzo Famao. Tutti i diritti riservati.</span>
+        <span class="fr">© <span class="year"></span> Vincenzo Famao. Tous droits réservés.</span>
+        <span class="es">© <span class="year"></span> Vincenzo Famao. Todos los derechos reservados.</span>
+        <span class="de">© <span class="year"></span> Vincenzo Famao. Alle Rechte vorbehalten.</span>
+        <span class="ja">© <span class="year"></span> Vincenzo Famao. 全著作権所有。</span>
+        <span class="pt">© <span class="year"></span> Vincenzo Famao. Todos os direitos reservados.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.year').forEach(function (el) {
+    el.textContent = new Date().getFullYear();
+  });
+
+  // **Questa pagina è il ripiego, non la strada principale.**
+  //
+  // Su un iPhone con l'app installata iOS intercetta il link PRIMA del
+  // browser — grazie a /.well-known/apple-app-site-association — e apre
+  // direttamente la sfida: qui non ci si arriva nemmeno. Ci arriva chi
+  // l'app non ce l'ha, chi apre da computer, e chi è su Android: per loro
+  // il codice in chiaro è l'unica cosa che serve davvero.
+  var codice = (new URLSearchParams(location.search).get('c') || '')
+                 .toUpperCase().replace(/[^A-Z0-9]/g, '');
+  if (codice) {
+    document.getElementById('codice').textContent = codice;
+    document.getElementById('apri').href = 'boomsort://challenge?c=' + encodeURIComponent(codice);
+  } else {
+    document.getElementById('codice').textContent = '?';
+    document.getElementById('apri').style.display = 'none';
+  }
+
+  // **La tendina lingua.** Non il selettore EN/IT del resto del sito —
+  // qui le lingue sono 7, mostrarle tutte fisse in fila non ci sta.
+  // Il pulsante mostra solo quella attiva; toccandolo si apre la lista
+  // delle altre sei.
+  (function () {
+    var corrente = document.getElementById('langCurrent');
+    var opzioni = document.getElementById('langOptions');
+    var contenitore = document.getElementById('langSwitch');
+
+    function applica(lang) {
+      document.documentElement.setAttribute('data-lang', lang);
+      document.documentElement.setAttribute('lang', lang === 'pt' ? 'pt-BR' : lang);
+      corrente.textContent = lang.toUpperCase();
+      opzioni.querySelectorAll('.lang-option').forEach(function (btn) {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+    }
+
+    // La pagina è già nella lingua giusta (impostata in testa, prima del
+    // disegno): qui serve solo sincronizzare il pulsante e la lista.
+    applica(document.documentElement.getAttribute('data-lang') || 'en');
+
+    corrente.addEventListener('click', function () {
+      var apri = opzioni.hidden;
+      opzioni.hidden = !apri;
+      corrente.setAttribute('aria-expanded', String(apri));
+    });
+
+    opzioni.querySelectorAll('.lang-option').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        applica(btn.dataset.lang);
+        try { localStorage.setItem('boomsort-sfida-lang', btn.dataset.lang); } catch (e) {}
+        opzioni.hidden = true;
+        corrente.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!contenitore.contains(e.target)) {
+        opzioni.hidden = true;
+        corrente.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+</script>
+
+</body>
+</html>

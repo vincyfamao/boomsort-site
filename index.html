@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1a1c3d">
+<title>BoomSort — Sort the bombs before they blow</title>
+<meta name="description" content="BoomSort is a fast, ad-free arcade game: sort bombs into the right bins while a dynamic soundtrack responds to how you play. Free, with one purchase to unlock everything.">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BoomSort — Sort the bombs before they blow">
+<meta property="og:description" content="A fast, ad-free arcade game: sort bombs into the right bins while a dynamic soundtrack responds to how you play.">
+<meta property="og:image" content="assets/social.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <img class="brand-icon" src="assets/bomba.png" alt="" aria-hidden="true">
+      <img class="brand-word" src="assets/wordmark-testata.png" alt="BoomSort">
+    </a>
+    <div class="navlinks">
+      <a href="index.html" class="active"><span class="en">Home</span><span class="it">Home</span></a>
+      <a href="index.html#features"><span class="en">Features</span><span class="it">Funzionalità</span></a>
+      <a href="support.html"><span class="en">Support</span><span class="it">Supporto</span></a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html"><span class="en">Terms</span><span class="it">Termini</span></a>
+      <a href="press.html">Press</a>
+      <div class="langswitch">
+        <button class="lang-btn active" data-lang="en" onclick="setSiteLang('en')">EN</button>
+        <button class="lang-btn" data-lang="it" onclick="setSiteLang('it')">IT</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="blob" style="width:340px;height:340px;top:-80px;left:-100px;background:#ff70a6;"></div>
+  <div class="blob" style="width:300px;height:300px;top:40px;right:-80px;background:#4fa8ff;"></div>
+  <div class="blob" style="width:260px;height:260px;bottom:-60px;left:40%;background:#ffca4a;"></div>
+  <div class="wrap">
+    <span class="hero-badge en">🧨 Coming soon on the App Store</span>
+    <span class="hero-badge it">🧨 Presto su App Store</span>
+    <img class="hero-bomb" src="assets/mascotte.png" alt="" aria-hidden="true">
+
+    <h1 class="en">Sort the bombs.<br>Feel the music rise.</h1>
+    <h1 class="it">Smista le bombe.<br>Senti la musica salire.</h1>
+
+    <p class="tagline en">A fast, honest arcade game: no ads, no energy bars, no subscriptions. Just you, your reflexes, and a soundtrack that responds to how you play.</p>
+    <p class="tagline it">Un arcade veloce e onesto: niente pubblicità, niente barre d'energia, niente abbonamenti. Solo tu, i tuoi riflessi e una colonna sonora che risponde a come giochi.</p>
+
+    <div class="hero-ctas">
+      <!-- Il giorno del lancio: href="https://apps.apple.com/app/id6788836304"
+           e le due etichette tornano "Download on the App Store" / "Scarica su
+           App Store". Finche' la scheda non esiste, un link ci porterebbe a un
+           404 — e il sito Apple lo apre durante la revisione. -->
+      <a class="btn btn-primary" href="#" onclick="return false;">
+        <span class="en">📱 Coming soon to the App Store</span>
+        <span class="it">📱 Presto su App Store</span>
+      </a>
+      <a class="btn btn-ghost" href="#features">
+        <span class="en">See what's inside</span>
+        <span class="it">Scopri le funzionalità</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker en">Why BoomSort</span>
+      <span class="kicker it">Perché BoomSort</span>
+      <h2 class="en">An arcade game built differently</h2>
+      <h2 class="it">Un arcade fuori dal coro</h2>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="icon">🎮</div>
+        <h3 class="en">13 modes, one game</h3>
+        <h3 class="it">13 modalità, un solo gioco</h3>
+        <p class="en">From an endless Classic mode to a 24-shift Career, every mode changes the rules — never the goal.</p>
+        <p class="it">Dall'infinita Classica alla Carriera a 24 turni: ogni modalità cambia le regole, mai lo scopo.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎵</div>
+        <h3 class="en">The music plays with you</h3>
+        <h3 class="it">La musica gioca con te</h3>
+        <p class="en">14 soundtracks: keep the combo alive and the multiplier opens the music layer by layer, always on the beat. Mess up, and the band goes quiet.</p>
+        <p class="it">14 colonne sonore: tieni viva la combo e il moltiplicatore apre la musica strato dopo strato, sempre a tempo. Sbagli, e la band si zittisce.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🌍</div>
+        <h3 class="en">A worldwide Daily Challenge</h3>
+        <h3 class="it">Sfida del giorno mondiale</h3>
+        <p class="en">The same deck for the whole planet: today's game is dealt from a single seed, the same one for everybody. One attempt a day, one leaderboard. The game will lengthen a fuse for someone who is struggling — never the other way round, so playing well is never punished. Twice a week it changes the rules entirely: pool day and orders day.</p>
+        <p class="it">Lo stesso mazzo per tutto il pianeta: la partita di oggi nasce da un solo seme, uguale per tutti. Un tentativo al giorno, una sola classifica. A chi sta faticando il gioco allunga la miccia — mai il contrario, così giocare bene non viene mai punito. Due giorni a settimana cambia proprio regolamento: giornata in piscina e giornata di ordini.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🖋️</div>
+        <h3 class="en">A stamp book, like a real hanko</h3>
+        <h3 class="it">Un quaderno dei timbri, come un hanko vero</h3>
+        <p class="en">Play a game, then stamp the day: you pick the ink, the game picks the seal. Nine seals that say how far you have come — and the mark for a whole year of returns is one you cannot buy, choose or skip to.</p>
+        <p class="it">Gioca una partita, poi timbra la giornata: l'inchiostro lo scegli tu, il sigillo lo decide il gioco. Nove sigilli che dicono quanto lontano sei arrivato — e il segno di un anno intero di ritorni non si compra, non si sceglie e non si salta.</p>
+      </div>
+      <div class="card">
+        <div class="icon">😴</div>
+        <h3 class="en">Bombs with a character</h3>
+        <h3 class="it">Bombe con un carattere</h3>
+        <p class="en">They blink, they yawn, they walk one foot at a time. The sleeper dozes with no fuse at all — until a bubble swells at her nose and pops: then she wakes up, wide-eyed, with a short fuse. You get a few seconds' warning. What you do with them is on you.</p>
+        <p class="it">Sbattono le palpebre, sbadigliano, camminano un piede alla volta. La dormiente riposa senza nemmeno una miccia — finché non le si gonfia al naso una bolla che scoppia: allora si sveglia di soprassalto, con la miccia corta. Il preavviso ce l'hai. Cosa farne è affare tuo.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🏭</div>
+        <h3 class="en">A 24-shift Career</h3>
+        <h3 class="it">Carriera a 24 turni</h3>
+        <p class="en">Four departments in the Boomville factory, difficulty climbing shift after shift, and an armored boss to close each one.</p>
+        <p class="it">Quattro reparti della fabbrica di Boomville, la difficoltà che sale turno dopo turno e un boss corazzato a chiudere ciascuno.</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔒</div>
+        <h3 class="en">No ads</h3>
+        <h3 class="it">Zero pubblicità</h3>
+        <p class="en">No banners, no videos to sit through, no subscriptions. One optional purchase opens up 7 more modes, the Duel and 18 Career shifts.</p>
+        <p class="it">Nessun banner, nessun video da subire, nessun abbonamento. Un unico acquisto opzionale apre 7 modalità in più, la Sfida a due e 18 turni di Carriera.</p>
+      </div>
+      <div class="card">
+        <div class="icon">✨</div>
+        <h3 class="en">Everything is earned by playing</h3>
+        <h3 class="it">Tutto si guadagna giocando</h3>
+        <p class="en">Themes, backdrops, hats and soundtracks unlock as you level up or by meeting a challenge. There is no cosmetics shop: nothing is sold one piece at a time, there is no currency to buy and no loot box to open.</p>
+        <p class="it">Temi, sfondi, cappelli e colonne sonore si sbloccano salendo di livello o superando una sfida. Non esiste un negozio di cosmetici: niente si vende a pezzi, non c'è una valuta da comprare e non c'è nessuna cassa da aprire.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="modes">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker en">Modes</span>
+      <span class="kicker it">Modalità</span>
+      <h2 class="en">Something for every mood</h2>
+      <h2 class="it">Qualcosa per ogni umore</h2>
+      <p class="en">Thirteen ways to play: from a Classic that never ends to the Career's 24 shifts, all the way to a Daily Challenge the whole world takes on together.</p>
+      <p class="it">Tredici modi di giocare: si va da una Classica che non finisce mai ai 24 turni della Carriera, fino alla Sfida del giorno che il mondo intero affronta insieme.</p>
+    </div>
+    <div class="chips">
+      <span class="chip">♾️ <span class="en">Classic</span><span class="it">Classica</span></span>
+      <span class="chip">🍃 Zen</span>
+      <span class="chip">📅 <span class="en">Daily Challenge</span><span class="it">Sfida del giorno</span></span>
+      <span class="chip">🎓 <span class="en">Training</span><span class="it">Addestramento</span></span>
+      <span class="chip">🏭 <span class="en">Career</span><span class="it">Carriera</span></span>
+      <span class="chip">⏱️ <span class="en">Time Attack</span><span class="it">A tempo</span></span>
+      <span class="chip">🔥 <span class="en">Frenzy</span><span class="it">Frenesia</span></span>
+      <span class="chip">📦 <span class="en">Moving Day</span><span class="it">Trasloco</span></span>
+      <span class="chip">🏊 <span class="en">Pools</span><span class="it">Piscine</span></span>
+      <span class="chip">🛡️ <span class="en">Protect</span><span class="it">Proteggi</span></span>
+      <span class="chip">🏃 <span class="en">Escort Run</span><span class="it">Fuga</span></span>
+      <span class="chip">🧾 <span class="en">Orders</span><span class="it">Ordini</span></span>
+      <span class="chip">👥 <span class="en">Two-player Duel</span><span class="it">Sfida a due</span></span>
+    </div>
+  </div>
+</section>
+
+<section id="music">
+  <div class="wrap">
+    <div class="music-panel">
+      <div>
+        <h3 class="en">🎧 The soundtrack is a game system</h3>
+        <h3 class="it">🎧 La colonna sonora è un sistema di gioco</h3>
+        <p class="en">Every theme is built from 7 instruments mixed live while you play. The multiplier opens drums, bass, riff and lead one at a time, always on the beat, never at random. Lose the combo, and the arrangement closes back down.</p>
+        <p class="it">Ogni tema è composto da 7 strumenti sincronizzati, mixati dal vivo mentre giochi. Il moltiplicatore apre batteria, basso, riff e lead uno alla volta, sempre in battuta, mai a casaccio. Perdi la combo, e l'arrangiamento si richiude.</p>
+        <div class="theme-tags">
+          <span class="theme-tag">Overdrive</span>
+          <span class="theme-tag">Boombox</span>
+          <span class="theme-tag">Meltdown</span>
+          <span class="theme-tag">Skyline</span>
+          <span class="theme-tag">Turbine</span>
+          <span class="theme-tag">Charleston</span>
+          <span class="theme-tag">Nova</span>
+          <span class="theme-tag">Prism</span>
+          <span class="theme-tag"><span class="en">+ 6 more</span><span class="it">+ 6 altre</span></span>
+        </div>
+      </div>
+      <div class="eq" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="screenshots">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker en">Preview</span>
+      <span class="kicker it">Anteprima</span>
+      <h2 class="en">A peek inside the factory</h2>
+      <h2 class="it">Uno sguardo alla fabbrica</h2>
+    </div>
+    <div class="mockups">
+      <figure>
+        <img class="mockup-shot" src="assets/screenshot-classica.jpg"
+             alt="BoomSort gameplay: varied bombs mid-sort, score, multiplier and combo on screen"
+             width="780" height="1576">
+        <figcaption class="mockup-caption en">Classic — score, multiplier, combo</figcaption>
+        <figcaption class="mockup-caption it">Classica — punteggio, moltiplicatore, combo</figcaption>
+      </figure>
+      <figure>
+        <img class="mockup-shot" src="assets/screenshot-carriera.jpg"
+             alt="Career mode: the Boomville Factory map, Assembly Dept. complete and Warehouse underway"
+             width="780" height="1576">
+        <figcaption class="mockup-caption en">Career — departments, shifts, stars</figcaption>
+        <figcaption class="mockup-caption it">Carriera — reparti, turni, stelle</figcaption>
+      </figure>
+      <figure>
+        <img class="mockup-shot" src="assets/screenshot-ost.jpg"
+             alt="The OST collection: eight dynamic soundtrack themes, unlocked by playing"
+             width="780" height="1576">
+        <figcaption class="mockup-caption en">Soundtrack — unlockable by playing</figcaption>
+        <figcaption class="mockup-caption it">Colonna sonora — sbloccabile giocando</figcaption>
+      </figure>
+    </div>
+    <p class="mockups-note en">Straight from the game, on an iPhone 14 Pro Max — no staging, no filters.</p>
+    <p class="mockups-note it">Prese direttamente dal gioco, su iPhone 14 Pro Max — nessuna messa in scena, nessun filtro.</p>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker en">Pricing</span>
+      <span class="kicker it">Prezzo</span>
+      <h2 class="en">Free to start. One purchase for everything else.</h2>
+      <h2 class="it">Gratis per iniziare. Un acquisto per tutto il resto.</h2>
+    </div>
+    <div class="grid" style="grid-template-columns:1fr 1fr;max-width:760px;margin:0 auto;">
+      <div class="card">
+        <div class="icon">🆓</div>
+        <h3 class="en">Free</h3>
+        <h3 class="it">Gratis</h3>
+        <p class="en">Classic, Zen, Daily Challenge, Training and the Career's first department — with the whole progression, and the customizations (themes, hats, backdrops, soundtracks) you unlock along the way.</p>
+        <p class="it">Classica, Zen, Sfida del giorno, Addestramento e il primo reparto della Carriera — con tutta la progressione, e le personalizzazioni (temi, cappelli, sfondi, colonne sonore) che si sbloccano giocando.</p>
+      </div>
+      <div class="card" style="border-color:rgba(255,202,74,0.5);">
+        <div class="icon">👑</div>
+        <h3>BoomSort+</h3>
+        <p class="price testo en">One-time purchase</p>
+        <p class="price testo it">Acquisto una tantum</p>
+        <p class="en">Everything in Free, plus Time Attack, Frenzy, Moving Day, Pools, Protect, Escort Run, Orders, the two-player Duel and Career departments 2–4 — with their own customizations to unlock by playing, and a small welcome kit the moment you buy. No subscription: you pay once and it's yours for good. The App Store shows the price for your country.</p>
+        <p class="it">Tutto quello di Gratis, più A tempo, Frenesia, Trasloco, Piscine, Proteggi, Fuga, Ordini, la Sfida a due e i reparti 2-4 della Carriera — con le loro personalizzazioni da sbloccare giocando, e un piccolo kit di benvenuto appena acquisti. Nessun abbonamento: paghi una volta ed è tuo per sempre. Il prezzo per il tuo paese lo trovi su App Store.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cta">
+  <div class="wrap">
+    <div class="contact-box">
+      <h3 class="en">Ready to sort?</h3>
+      <h3 class="it">Pronto a smistare?</h3>
+      <p class="en">BoomSort is coming soon to the App Store for iPhone and iPad.</p>
+      <p class="it">BoomSort arriva presto su App Store per iPhone e iPad.</p>
+      <!-- Il giorno del lancio: href="https://apps.apple.com/app/id6788836304"
+           e le due etichette tornano "Download on the App Store" / "Scarica su
+           App Store". Finche' la scheda non esiste, un link ci porterebbe a un
+           404 — e il sito Apple lo apre durante la revisione. -->
+      <a class="btn btn-primary" href="#" onclick="return false;">
+        <span class="en">📱 Coming soon to the App Store</span>
+        <span class="it">📱 Presto su App Store</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="support.html"><span class="en">Support</span><span class="it">Supporto</span></a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html"><span class="en">Terms of Use</span><span class="it">Termini d'uso</span></a>
+        <a href="press.html"><span class="en">Press kit</span><span class="it">Press kit</span></a>
+      </div>
+      <div class="footer-copy">
+        <span class="en">© <span id="year-en"></span> Vincenzo Famao. All rights reserved.</span>
+        <span class="it">© <span id="year-it"></span> Vincenzo Famao. Tutti i diritti riservati.</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="lang.js"></script>
+<script>
+  var y = new Date().getFullYear();
+  document.getElementById('year-en').textContent = y;
+  document.getElementById('year-it').textContent = y;
+</script>
+</body>
+</html>

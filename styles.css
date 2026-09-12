@@ -1,0 +1,741 @@
+/* BoomSort — sito ufficiale
+   Palette presa 1:1 dal gioco (Game/GameMode.swift → Palette.bombColors
+   e dai gradienti usati in MenuView/GameView), font di sistema in grassetto
+   per richiamare il .rounded/.black di SwiftUI usato in-app. */
+
+:root {
+  --bg-top: #1a1c3d;
+  --bg-bottom: #2c2050;
+  --ink: #0d0e22;
+  --white: #ffffff;
+  --muted: rgba(255, 255, 255, 0.68);
+  --muted2: rgba(255, 255, 255, 0.46);
+  --card: rgba(255, 255, 255, 0.06);
+  --card-hover: rgba(255, 255, 255, 0.10);
+  --card-border: rgba(255, 255, 255, 0.10);
+
+  --yellow: #ffca4a;   /* bomba gialla */
+  --pink: #ff70a6;     /* bomba rosa */
+  --blue: #4fa8ff;     /* bomba blu */
+  --dark-bomb: #2b2b35;/* bomba nera */
+  --orange: #ff8a3d;
+  --gold: #ffd24d;
+  --green-ok: #34d399;
+
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+  --maxw: 1100px;
+}
+
+* { box-sizing: border-box; }
+/* Su iOS Safari, scorrere oltre l'inizio della pagina (l'effetto
+   elastico) scopre per un attimo lo sfondo di <html>, non quello di
+   <body> — e senza uno sfondo qui e' il bianco di default del browser.
+   Segnalato dall'autore su iPhone: una fascia bianca in alto, come se
+   sotto al rettangolo del sito ci fosse un altro sfondo. Lo stesso colore
+   della cima del gradiente del body, cosi' il rimbalzo non si nota. */
+html { scroll-behavior: smooth; background: var(--bg-top); }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--white);
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(255, 138, 61, 0.14), transparent 60%),
+    radial-gradient(900px 500px at 90% 0%, rgba(79, 168, 255, 0.12), transparent 55%),
+    linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 55%, var(--ink) 100%);
+  /* niente background-attachment:fixed — su iOS Safari (il pubblico
+     principale di questo sito) è notoriamente instabile: scatta, si
+     ridisegna male, in certi casi lascia porzioni di pagina non dipinte. */
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Nav ---------- */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: rgba(13, 14, 34, 0.55);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nav .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-weight: 900;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+/* **Il marchio vero, ma con la misura che gli serve.**
+   La bomba e la scritta sono quelle dell'app, rese dai suoi componenti. Il
+   loro alone al neon però occupa spazio, e nel file di stampa ne occupa
+   parecchio: misurato, le lettere stavano dentro il **30%** dell'altezza
+   dell'immagine. Alta 30 px in pagina voleva dire glifi da 11 px — di qui la
+   macchia rosa in cui le lettere sparivano. Non era l'alone a essere
+   sbagliato: era il ritaglio.
+
+   `wordmark-testata.png` è la stessa scritta con l'aria ridotta a quanto
+   serve al neon: le lettere occupano ora due terzi dell'altezza, e alla
+   stessa misura in pagina si leggono. Il file arioso resta per il press kit,
+   dove chi lo scarica vuole proprio il margine. */
+.brand-icon { width: 40px; height: 40px; flex-shrink: 0; object-fit: contain; }
+.brand-word { height: 38px; width: auto; flex-shrink: 0; display: block; }
+@media (max-width: 520px) {
+  .brand-icon { width: 34px; height: 34px; }
+  .brand-word { height: 32px; }
+}
+
+.navlinks {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.navlinks a {
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--muted);
+  padding: 8px 14px;
+  border-radius: 999px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.navlinks a:hover, .navlinks a.active {
+  background: var(--card);
+  color: var(--white);
+}
+
+/* ---------- Language switch ---------- */
+
+.langswitch {
+  display: flex;
+  gap: 2px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 999px;
+  padding: 3px;
+  margin-left: 6px;
+}
+
+.lang-btn {
+  border: none;
+  background: transparent;
+  color: var(--muted2);
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.lang-btn.active {
+  background: linear-gradient(135deg, var(--gold), var(--orange));
+  color: #241300;
+}
+
+/* ---------- Language switch (pagina sfida, 7 lingue) ----------
+   Le due sigle EN/IT del resto del sito stanno bene affiancate; sette
+   in fila sarebbero troppe. Qui si vede solo quella attiva, e si tocca
+   per aprire la lista delle altre sei — stessa pillola dorata di
+   `.lang-btn.active` per l'opzione scelta, cosi' il linguaggio visivo
+   resta lo stesso. */
+.lang-switch { position: relative; }
+
+.lang-current {
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  color: var(--white);
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  padding: 7px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.lang-current:hover { background: var(--card-hover); }
+
+.lang-options {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: rgba(13, 14, 34, 0.92);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 6px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.lang-option {
+  border: none;
+  background: transparent;
+  color: var(--muted2);
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  padding: 7px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.lang-option:hover { color: var(--white); background: var(--card-hover); }
+
+.lang-option.active {
+  background: linear-gradient(135deg, var(--gold), var(--orange));
+  color: #241300;
+}
+
+/* L'attributo `hidden` e la regola `display: flex` qui sopra hanno la
+   stessa specificita': senza questa riga vince quella dichiarata dopo
+   nel foglio di stile (questa), e la tendina resterebbe visibile anche
+   chiusa. */
+.lang-options[hidden] { display: none; }
+
+/* ---------- Language toggling ----------
+   Default document state is English (data-lang="en" set in HTML, so
+   there is no flash-of-both-languages before JS runs). JS only ever
+   needs to hide the INACTIVE languages — the active one keeps its tag's
+   normal display (block for p/li/h1, inline for span, etc.).
+   Sette sigle invece di due: la pagina sfida/index.html ne usa 7 (vedi
+   il suo `langSwitch`), il resto del sito solo `it`/`en` — le regole in
+   più non fanno nulla dove quelle classi non esistono. */
+[data-lang="it"] :is(.en, .fr, .es, .de, .ja, .pt) { display: none !important; }
+[data-lang="en"] :is(.it, .fr, .es, .de, .ja, .pt) { display: none !important; }
+[data-lang="fr"] :is(.it, .en, .es, .de, .ja, .pt) { display: none !important; }
+[data-lang="es"] :is(.it, .en, .fr, .de, .ja, .pt) { display: none !important; }
+[data-lang="de"] :is(.it, .en, .fr, .es, .ja, .pt) { display: none !important; }
+[data-lang="ja"] :is(.it, .en, .fr, .es, .de, .pt) { display: none !important; }
+[data-lang="pt"] :is(.it, .en, .fr, .es, .de, .ja) { display: none !important; }
+
+/* ---------- Buttons / pills ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 0.98rem;
+  text-decoration: none;
+  padding: 13px 22px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold), var(--orange));
+  color: #241300;
+  box-shadow: 0 10px 30px -8px rgba(255, 138, 61, 0.55);
+}
+
+.btn-ghost {
+  background: var(--card);
+  color: var(--white);
+  border: 1px solid var(--card-border);
+}
+
+.pill {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  padding: 76px 0 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 26px;
+}
+
+/* Il Portale è più largo che alto: gli serve un po' più di respiro della
+   vecchia mascotte, altrimenti la bomba che ne esce si legge minuscola. */
+.hero-bomb { width: clamp(190px, 32vw, 280px); height: auto; margin: 0 auto 14px; display: block; }
+
+.hero h1 {
+  font-size: clamp(2.6rem, 6vw, 4.4rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  margin: 0 0 14px;
+  background: linear-gradient(180deg, #ffffff 20%, #ffd9ad 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero p.tagline {
+  font-size: clamp(1.05rem, 2.4vw, 1.35rem);
+  color: var(--muted);
+  max-width: 620px;
+  margin: 0 auto 32px;
+  font-weight: 500;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.hero-note {
+  font-size: 0.85rem;
+  color: var(--muted2);
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.35;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ---------- Sections ---------- */
+
+section { padding: 56px 0; }
+
+.section-head { text-align: center; max-width: 640px; margin: 0 auto 40px; }
+.section-head .kicker {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.section-head h2 {
+  font-size: clamp(1.7rem, 3.6vw, 2.3rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0 0 12px;
+}
+.section-head p { color: var(--muted); margin: 0; font-size: 1.02rem; }
+
+/* ---------- Feature grid ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 860px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 22px;
+}
+
+.card .icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  margin-bottom: 14px;
+  background: rgba(255, 202, 74, 0.14);
+}
+
+.card h3 { margin: 0 0 8px; font-size: 1.05rem; font-weight: 800; }
+.card p { margin: 0; color: var(--muted); font-size: 0.92rem; }
+
+/* ---------- Mode chips ---------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.chip {
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+/* ---------- Music spotlight ---------- */
+
+.music-panel {
+  background: linear-gradient(135deg, rgba(255, 138, 61, 0.14), rgba(79, 168, 255, 0.10));
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 36px;
+  align-items: center;
+}
+
+@media (max-width: 800px) { .music-panel { grid-template-columns: 1fr; padding: 28px; } }
+
+.music-panel h3 { font-size: 1.5rem; font-weight: 900; margin: 0 0 12px; }
+.music-panel p { color: var(--muted); margin: 0 0 18px; }
+
+.eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 140px;
+  justify-content: center;
+}
+
+.eq span {
+  width: 10px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, var(--gold), var(--orange));
+  animation: eqbounce 1.1s ease-in-out infinite;
+}
+
+.eq span:nth-child(1) { height: 40%; animation-delay: 0s; }
+.eq span:nth-child(2) { height: 75%; animation-delay: 0.1s; }
+.eq span:nth-child(3) { height: 55%; animation-delay: 0.2s; }
+.eq span:nth-child(4) { height: 95%; animation-delay: 0.3s; }
+.eq span:nth-child(5) { height: 65%; animation-delay: 0.4s; }
+.eq span:nth-child(6) { height: 85%; animation-delay: 0.5s; }
+.eq span:nth-child(7) { height: 50%; animation-delay: 0.6s; }
+
+@keyframes eqbounce {
+  0%, 100% { transform: scaleY(0.6); }
+  50% { transform: scaleY(1); }
+}
+
+.theme-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.theme-tag {
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ---------- Mockups (screenshot placeholder illustrations) ---------- */
+
+.mockups {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+@media (max-width: 860px) { .mockups { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; } }
+
+.mockups figure { margin: 0; }
+
+/* Screenshot vero, non piu' l'illustrazione disegnata: stessa cornice
+   scura e lo stesso bordo sottile che aveva l'SVG placeholder, cosi'
+   il cambio non si vede nell'impaginazione, solo nel contenuto.
+   Il titolo "Career" nasceva ~2.1% piu' in alto (misurato sui pixel
+   sorgente) di "Collection": due tentativi CSS prima di questo — uno
+   ritagliava l'immagine dentro una cornice ferma e il taglio cadeva
+   proprio dove iniziava "Warehouse"; l'altro spostava tutta la cornice
+   e disallineava il riquadro stesso dagli altri due. Risolto invece
+   nel file sorgente stesso (spostate le righe dentro
+   screenshot-carriera.jpg, non nel CSS): l'immagine e' gia' quella
+   giusta, la cornice qui sotto e' identica per tutte e tre e non ha
+   bisogno di sapere quale sia Carriera. */
+.mockup-shot {
+  display: block;
+  width: 100%;
+  /* L'HTML porta width="780" height="1576": servono al browser per
+     riservare lo spazio prima che l'immagine carichi, ed e' un bene
+     tenerli. Ma quell'altezza e' un numero assoluto in pixel, e senza
+     "height: auto" qui vinceva lei — non l'aspect-ratio sotto — lasciando
+     il riquadro largo ~270px e alto 1576px veri. L'immagine si allargava
+     per riempire quell'altezza e usciva tagliata ai due lati: il testo
+     delle foto (che e' nei pixel, non HTML) si vedeva a meta'. Riprodotto
+     a 900px di finestra.
+  */
+  height: auto;
+  aspect-ratio: 780 / 1576;
+  object-fit: cover;
+  object-position: top;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+}
+
+.mockup-caption {
+  text-align: center;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: var(--muted2);
+  font-weight: 600;
+}
+
+.mockups-note {
+  text-align: center;
+  color: var(--muted2);
+  font-size: 0.82rem;
+  margin-top: 28px;
+}
+
+/* ---------- Steps (support / how to) ---------- */
+
+.steps { counter-reset: step; display: grid; gap: 14px; }
+.step {
+  display: flex;
+  gap: 16px;
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+}
+.step .num {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--orange));
+  color: #241300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+.step h4 { margin: 2px 0 4px; font-size: 1rem; font-weight: 800; }
+.step p { margin: 0; color: var(--muted); font-size: 0.92rem; }
+
+/* ---------- FAQ ---------- */
+
+.faq { display: grid; gap: 10px; max-width: 760px; margin: 0 auto; }
+
+.faq-item {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 4px 20px;
+}
+
+.faq-item summary {
+  cursor: pointer;
+  font-weight: 800;
+  padding: 16px 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+";
+  font-size: 1.3rem;
+  color: var(--gold);
+  transition: transform 0.15s;
+  flex-shrink: 0;
+}
+.faq-item[open] summary::after { transform: rotate(45deg); }
+.faq-item p { margin: 0 0 18px; color: var(--muted); font-size: 0.94rem; }
+
+/* ---------- Legal pages ---------- */
+
+.legal {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 50px 24px 90px;
+}
+
+.legal h1 {
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 900;
+  margin: 0 0 6px;
+}
+
+.legal .updated {
+  color: var(--muted2);
+  font-size: 0.88rem;
+  margin-bottom: 36px;
+  display: block;
+}
+
+.legal h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 34px 0 12px;
+}
+
+.legal p, .legal li { color: var(--muted); font-size: 0.98rem; }
+.legal ul { padding-left: 20px; }
+.legal li { margin-bottom: 6px; }
+
+.legal .callout {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  margin: 18px 0;
+}
+
+
+/* ---------- Contact / support box ---------- */
+
+.contact-box {
+  text-align: center;
+  background: linear-gradient(135deg, rgba(255, 202, 74, 0.14), rgba(255, 138, 61, 0.08));
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 44px 30px;
+}
+.contact-box h3 { font-size: 1.4rem; font-weight: 900; margin: 0 0 8px; }
+.contact-box p { color: var(--muted); margin: 0 0 22px; }
+
+/* ---------- Press ---------- */
+
+.fact-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+@media (max-width: 760px) { .fact-grid { grid-template-columns: repeat(2, 1fr); } }
+.fact {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  text-align: center;
+}
+.fact .n { font-size: 1.7rem; font-weight: 900; color: var(--gold); }
+.fact .l { font-size: 0.8rem; color: var(--muted); font-weight: 700; }
+
+/* ---------- Footer ---------- */
+
+footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 36px 0 50px;
+  margin-top: 40px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-links { display: flex; gap: 18px; flex-wrap: wrap; }
+.footer-links a { text-decoration: none; color: var(--muted); font-size: 0.88rem; font-weight: 600; }
+.footer-links a:hover { color: var(--white); }
+.footer-copy { color: var(--muted2); font-size: 0.84rem; }
+
+/* **Il riquadro del prezzo senza una cifra dentro.**
+   `.price` nasce per «3,99 €»: due rem, nero, gradiente dorato. La cifra e'
+   stata tolta — App Store adatta il prezzo a ogni mercato, e una
+   cifra in euro su un sito che si legge da tutto il mondo e' sbagliata per la
+   maggioranza di chi la legge. Al suo posto c'e' una frase, e una frase a due
+   rem in nero grida senza dire niente di piu': stessa vernice, corpo da
+   sottotitolo. */
+.price.testo {
+  font-size: 1.1rem;
+  letter-spacing: 0.01em;
+  margin-bottom: 12px;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 900;
+  margin: 2px 0 10px;
+  background: linear-gradient(180deg, #ffffff 20%, #ffca4a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Press kit: i marchi scaricabili. Fondo a scacchi perché il PNG è
+   trasparente e chi lo scarica deve vederlo, non indovinarlo. */
+.asset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin: 22px 0 6px;
+}
+.asset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 16px;
+  text-decoration: none;
+  font-size: 0.78rem;
+  color: var(--muted);
+  border: 1px solid rgba(255,255,255,0.10);
+  background:
+    repeating-conic-gradient(rgba(255,255,255,0.05) 0% 25%, transparent 0% 50%) 50% / 18px 18px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.asset:hover { border-color: rgba(255,202,74,0.55); transform: translateY(-2px); }
+.asset img { width: 128px; height: 84px; object-fit: contain; display: block; }
