@@ -1,0 +1,10 @@
+{
+  "versioneMinima": "1.0.0",
+  "messaggio": null,
+  "evento": {
+    "id": "officina-polare",
+    "inizio": "2026-12-14T23:00:00Z",
+    "fine": "2027-01-15T23:00:00Z",
+    "classificaFino": "2027-01-31T23:00:00Z"
+  }
+}

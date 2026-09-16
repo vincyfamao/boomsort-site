@@ -1,0 +1,35 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "2G3S5W89VN.com.vf.boomsort"
+        ],
+        "components": [
+          {
+            "/": "/sfida",
+            "?": {
+              "c": "?*"
+            },
+            "comment": "Sfida amico: apre l'app col codice gia inserito"
+          },
+          {
+            "/": "/sfida/",
+            "?": {
+              "c": "?*"
+            },
+            "comment": "Stessa cosa con la barra finale, che alcuni hosting aggiungono"
+          },
+          {
+            "/": "/evento",
+            "comment": "Evento in-app (App Store Connect): apre l'app, che parte dalla Home; senza app va alla pagina del negozio"
+          },
+          {
+            "/": "/evento/",
+            "comment": "Stessa cosa con la barra finale"
+          }
+        ]
+      }
+    ]
+  }
+}
